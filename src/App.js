@@ -1,25 +1,37 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Countries from './components/Countries';
+import Meals from './components/Meals';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export const CountryContext = React.createContext();
+
+class App extends React.Component {
+  state = {
+    currentCountry: null
+  }
+
+  changeCountry = (country) => {
+    console.log(country)
+    this.setState({ ...this.state, currentCountry: country })
+  }
+
+
+  render() {
+    return (
+      <>
+        <CountryContext.Provider value={{
+          changeCountry: this.changeCountry
+        }}>
+          <div className='container my-5'>
+            <Countries />
+          </div>
+        </CountryContext.Provider>
+        <div className='container my-5'>
+          {this.state.currentCountry ? <Meals country={this.state.currentCountry} /> : null}
+        </div>
+      </>
+    )
+  }
 }
 
 export default App;
